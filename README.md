@@ -1,2 +1,2 @@
-# netza
-quote bot
+# tryxer
+yandex translation bot
