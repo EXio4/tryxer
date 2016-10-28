@@ -23,8 +23,8 @@ commandMatchServerHost cmd params_fn = cnd
                        (N x, Raw.CmdNumber y) -> x == y
                        (S x, Raw.Command   y) -> x == y
                        (_  , _              ) -> False
-                , Just rest <- params_fn (map (\(Raw.Param x) -> T.decodeUtf8 x) params)
-                = Just (T.decodeUtf8 host
+                , Just rest <- params_fn (map (\(Raw.Param x) -> either (const "") id (T.decodeUtf8' x)) params)
+                = Just (either (const "") id (T.decodeUtf8' host)
                        ,rest)
           cnd _ = Nothing
 
@@ -42,8 +42,8 @@ commandMatchUser cmd params_fn = cnd
                 , let host = case hostp of
                                 Raw.ValidHost (Raw.Host h) -> h
                                 Raw.InvalidHost h      -> h
-                , Just rest <- params_fn (map (\(Raw.Param x) -> T.decodeUtf8 x) params)
-                = Just (User (Nick (T.decodeUtf8 nick)) (T.decodeUtf8 ident) (T.decodeUtf8 host)
+                , Just rest <- params_fn (map (\(Raw.Param x) -> either (const "") id (T.decodeUtf8' x)) params)
+                = Just (User (Nick (either (const "") id $ T.decodeUtf8' nick)) (either (const "") id $ T.decodeUtf8' ident) (either (const "") id $ T.decodeUtf8' host)
                        ,rest)
           cnd _ = Nothing
           
@@ -57,7 +57,7 @@ commandMatchRaw params_fn = cnd
                 | let cmd = case cmd_input of
                        Raw.CmdNumber y -> N y
                        Raw.Command   y -> S y         
-                = params_fn cmd (map (\(Raw.Param x) -> T.decodeUtf8 x) params)
+                = params_fn cmd (map (\(Raw.Param x) ->either (const "") id $ T.decodeUtf8' x) params)
 
 
 join_pattern :: Raw.Message -> Maybe (User , (Channel, [Text]))

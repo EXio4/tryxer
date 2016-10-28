@@ -30,7 +30,7 @@ authThen ::  Monad m => Maybe SASLCfg -> [ChannelCfg] -> IRC m a -> IRC m a
 authThen saslMay channels continue = loop
     where sasl_encode :: SASLCfg -> T.Text
           sasl_encode (SASLCfg username password) =
-                T.E.decodeUtf8 . Base64.encode . T.E.encodeUtf8 . T.pack $
+                either (const "") id . T.E.decodeUtf8' . Base64.encode .  T.E.encodeUtf8 . T.pack $
                         (username <> "\00" <> username <> "\00" <> password <> "\00")
           sasl_auth sasl x =
                 case x of

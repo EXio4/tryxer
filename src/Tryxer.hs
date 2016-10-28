@@ -28,7 +28,7 @@ data Config = Config {
 }
 
 makeConfig :: Text -> Text -> [Text] -> Config
-makeConfig apikey prefix admins = Config apikey prefix (map (Regex.regex []) admins
+makeConfig apikey prefix admins = Config apikey prefix (map (Regex.regex []) admins)
 
 data Loop = Loop | Quit
 til :: Monad m => m Loop -> m ()
