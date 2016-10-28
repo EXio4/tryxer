@@ -1,0 +1,18 @@
+bot:   
+   api_key: "<yandex api key here>"
+   prefix: "."
+   admins:   # list of admins, regex on the host)
+        - "^unaffiliated/hacker$"
+
+irc: 
+   network: irc.subluminal.net
+   port:    6667           # optional, 6667 is default value
+   nick:    tryxer
+#   sasl:                   # not yet implemented?, it's optional
+#       username: magic
+#      password: hunter2
+   channels:
+       - name: "#programming"
+       - name: "#esperanto"
+         #password: abc optional
+    
